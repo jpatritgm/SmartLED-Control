@@ -469,7 +469,13 @@ display:
 
 # Probleme und Lösungen
 ### *Problem #1* - Das Display
-Das mit Abstand größte Problem stellte das Display, welches ich erstmals für das Projekt verwenden wollte, dar ([ESP32-8048s070c](https://www.tinytronics.nl/en/development-boards/microcontroller-boards/with-wi-fi/jingcai-esp32-8048s070c-7-inch-tft-lcd-display-800*480-pixels-with-touchscreen-esp32-s3)). Es gab kaum Dokumentation oder Konfigurations-Informationen online zu finden, außerdem war keine Beschreibung oder Information zu Treibern vom Hersteller beigegeben. Stundenlanges Ausprobieren verschiedenster Treiber für den Touchscreen hat mich auch nicht viel weiter gebracht, also habe ich mich nach einigen Tagen dazu entschieden, auf ein anderes, bekannteres Display mit mehr Informationen zu der Konfiguration umzusteigen - das [ESP32-32e LCD-Display](https://www.lcdwiki.com/2.8inch_ESP32-32E_Display).
+Das mit Abstand größte Problem stellte das 7" Display, welches ich erstmals für das Projekt verwenden wollte, dar ([ESP32-8048s070c](https://www.tinytronics.nl/en/development-boards/microcontroller-boards/with-wi-fi/jingcai-esp32-8048s070c-7-inch-tft-lcd-display-800*480-pixels-with-touchscreen-esp32-s3)). Es gab kaum Dokumentation oder Konfigurations-Informationen online zu finden, außerdem war keine Beschreibung oder Information zu Treibern vom Hersteller beigegeben. Stundenlanges Ausprobieren verschiedenster Treiber für den Touchscreen hat mich auch nicht viel weiter gebracht, also habe ich mich nach einigen Tagen dazu entschieden, auf ein anderes, bekannteres Display mit mehr Informationen zu der Konfiguration umzusteigen - das [ESP32-32e LCD-Display](https://www.lcdwiki.com/2.8inch_ESP32-32E_Display).
+
+> Jedoch habe ich eine einfache GUI auf dem großen 7" Display hinbekommen, welche aber nicht touch-Funktionen realisieren konnte
+
+![display7](https://github.com/user-attachments/assets/e7f1a90e-5d66-4348-ad3b-a3f03a99b033)
+
+
 
 ### WLAN-Probleme
 Weiters hatte ich manchmal das Problem, das der ESP32 von dem Display und mein anderer ESP32C3 nicht in dem WLAN Netzwerk gefunden wurden und ich somit nicht ihre IP-Adresse herausfinden und sie direkt ansprechen konnte. Jedoch konnte ich dieses Problem relativ leicht lösen, indem ich ihnen direkt eine IP-Adresse mit der Code-Zeile ``use_adress: XXX.XXX.XXX.XXX`` zuwies.
