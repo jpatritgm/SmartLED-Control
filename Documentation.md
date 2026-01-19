@@ -1,16 +1,16 @@
 # Smart LED-Control Dokumentation
 
 Inhalt dieser Dokumentation:
-1. [Idee und Projektstart](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#idee-und-projektstart)
-2. [Planung und Recherche](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#planung-und-recherche)
+1. [Idee und Projektstart](#idee-und-projektstart)
+2. [Planung und Recherche](#planung-und-recherche)
 3. [Erste Tests der HW](#erste-tests-der-hw)
-4. [Einrichtung der Entwicklungsumgebung](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#einrichtung-der-entwicklungsumgebung)
-5. [Anforderungen](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#anforderungen)
+4. [Einrichtung der Entwicklungsumgebung](#einrichtung-der-entwicklungsumgebung)
+5. [Anforderungen](#anforderungen)
 6. [Abgedeckte Kriterien](#abgedeckte-kriterien)
-7. [Projektzeitplan](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#projektzeitplan)
-8. [Probleme und Lösungen](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#probleme-und-lösungen)
-9. [Ressourcen](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#ressourcen)
-10. [Recherche](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#recherche)
+7. [Projektzeitplan](#projektzeitplan)
+8. [Probleme und Lösungen](#probleme-und-lösungen)
+9. [Ressourcen](#ressourcen)
+10. [Recherche](#recherche)
 
 # Idee und Projektstart
 ### Erste Ideen
