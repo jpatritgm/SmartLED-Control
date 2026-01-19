@@ -5,7 +5,7 @@ Inhalt dieser Dokumentation:
 2. [Planung und Recherche](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#planung-und-recherche)
 3. [Erste Tests der HW](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#erste-tests-der-hw)
 4. [Einrichtung der Entwicklungsumgebung](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#einrichtung-der-entwicklungsumgebung)
-5. [Anforderungen](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#anforderungen)
+5. [Anforderungen](my-custom-anchor-point)
 6. [Abgedeckte Kriterien](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#abgedeckte-kriterien)
 7. [Projektzeitplan](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#projektzeitplan)
 8. [Probleme und Lösungen](https://github.com/jpatritgm/SmartLED-Control/edit/main/Documentation.md#probleme-und-lösungen)
@@ -94,7 +94,9 @@ void loop() {
 
 # Einrichtung der Entwicklungsumgebung
 
+<a name="my-custom-anchor-point"></a>
 # Anforderungen
+  
 ### Funktionale Anforderungen
 - Steuerung des LED-Strips über das Touch-Display
   - Ein/aus
