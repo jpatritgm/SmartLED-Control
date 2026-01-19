@@ -93,8 +93,292 @@ void loop() {
 ![image](https://github.com/user-attachments/assets/9f07c574-8327-4016-83fc-02aa4650a83b)
 
 # Einrichtung der Entwicklungsumgebung
+Als nächstes habe ich meine Entwicklungsumgebung vorbereitet, welche ich später verwenden werde.<br>
+Ich habe auf einem alten Laptop, welcher als Server für Home Assistant dienen soll, Linux Ubuntu installiert und dort Docker installiert und eingerichtet. 
+### Linux Ubuntu einrichten
+Zuerst habe ich einen Boot-Stick mit dem Ubuntu 24.04.3 Iso-Image erstellt. Dazu habe ich das Programm Rufus verwendet. Als nächsten Schritt habe ich auf dem Laptop, der als Server dienen soll, aus dem Boot Menü (F12) vom Stick gebootet und Ubuntu installiert.
 
-<a name="my-custom-anchor-point"></a>
+**Ubuntu Image:** https://ubuntu.com/download/desktop
+<br>**Rufus:** https://rufus.ie/de/
+### Tailscale
+Danach habe ich auf diesem und meinem Schullaptop Tailscale installiert und getestet, ob eine stabile Verbindung möglich war.<br>
+In Linux habe ich für die Installation von Tailscale den Befehl ``curl -fsSL https://tailscale.com/install.sh | sh`` verwendet. Um die Funktionalität davon zu prüfen, habe ich mit dem Befehl ``sudo tailscale up`` Tailscale in Ubuntu gestartet.<br>
+Dann habe ich Tailscale übers Web auf dem anderen Arbeitslaptop (Windows) installiert und mich mit demselben Konto angemeldet, wie auch in Ubuntu. Dies war erfolgreich, das konnte man daran erkennen, dass die beiden Geräte auf der Website im selben Netzwerk erkennbar waren 
+(-> heißt <ins>Tailnet</ins>).<br>
+
+> Bild der Tailscale Web-Oberfläche
+
+<img width="945" height="405" alt="image" src="https://github.com/user-attachments/assets/d7840175-abbb-4b45-b7ad-4a1fe35b6aa5" />
+<br><br>
+
+Sobald beide Geräte im Tailscale Netzwerk waren (in Linux zuerst mit ``sudo tailscale login`` in Tailscale einloggen), konnte ich mit ``ping XXX.XXX.XXX.XXX`` die Verbindung zu dem Linux-Laptop vom Windows Laptop aus testen und per SSH mit dem Befehl ``ssh benutzername@XXX.XXX.XXX.XXX`` (Tailscale ip in Linux mit ``tailscale ip`` herausfinden) auf das Linux Gerät, welches sich bei mir zu Hause befindet zugreifen und dort auch dann auch von der Schule aus arbeiten (oder auch von einem anderen Gerät  PC zuhause).
+
+> Bild, wie von (Windows) PC auf Linux Laptop zugegriffen wird
+
+<img width="945" height="387" alt="image" src="https://github.com/user-attachments/assets/8607d697-4f1f-4b08-9bd6-05dec9c03667" />
+<br><br>
+
+### Docker Container erstellen
+Anschließend habe ich noch Home Assistant, ESPHome und Portainer in Docker Containern gestartet. Dazu habe ich eine YAML-Konfigurationsdatei erstellt. Um die Funktionalität von Home Assistant als Beispiel zu testen habe ich dann ``http://XXX.XXX.XXX.XXX:8123`` im Browser aufgerufen und mich dann in Home Assistant eingeloggt und bin auf folgende Seite gekommen. 
+
+<img width="1047" height="414" alt="image" src="https://github.com/user-attachments/assets/246843d0-893e-4529-9681-895b3c2f783c" />
+<br><br>
+
+> YAML-Konfigurationsdatei für Docker-Container
+
+```
+version: '3.0'
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    restart: always
+    stdin_open: true
+    tty: true
+    ports:
+      - "9000:9000/tcp"
+    environment:
+      - TZ=Europe/Vienna
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/portainer:/data
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - /opt/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    environment:
+      TZ: Europe/Vienna
+  esphome:
+    container_name: esphome
+    image: ghcr.io/esphome/esphome:stable
+    volumes:
+      - ./esphome_config:/config
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: host 
+    restart: always
+```
+
+### Home Assistant Konfigurationen
+***Dashboard mit dem LCD-Display und LED-Streifen inkludiert***
+
+<img width="945" height="388" alt="image" src="https://github.com/user-attachments/assets/1f28b026-25b4-4c07-b7a7-c70b70bbc265" />
+
+
+
+### ESPHome
+
+> Konfigurationsdatei für LCD-Display
+
+```
+esphome:
+  name: lcd-display
+  friendly_name: LCD-Display
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "p951ySxZUJdnZcVduS/ZlFYbmcpFIU23b+KpzF7kJgY="
+
+ota:
+  - platform: esphome
+    password: "PASSWORD1234"
+
+wifi:
+  ssid: "WIFI SSID"
+  password: "WIFI PASSWORD"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Lcd-Display Fallback Hotspot"
+    password: "PASSWORD1234"
+
+captive_portal:
+
+output:
+  - platform: ledc
+    pin: GPIO21
+    id: backlight_pwm
+  - platform: gpio
+    pin: GPIO3
+    id: gpio_3_out
+    inverted: False
+  - platform: ledc
+    pin: GPIO1
+    id: gpio_1_pwm
+    inverted: False
+
+light:
+  - platform: monochromatic
+    output: backlight_pwm
+    name: Display Backlight
+    id: backlight
+    restore_mode: ALWAYS_ON
+  - platform: binary
+    output: gpio_3_out
+    id: local_gpio3
+    name: "GPIO 3 Out"
+  - platform: monochromatic
+    output: gpio_1_pwm
+    id: local_gpio1
+    name: "Test LED Dimmbar"
+    gamma_correct: 2.8
+
+spi:
+  - id: tft
+    type: single
+    clk_pin: GPIO14
+    mosi_pin: GPIO13
+    miso_pin: GPIO12
+  - id: touch
+    clk_pin: GPIO25
+    mosi_pin: GPIO32
+    miso_pin: GPIO39
+
+lvgl:
+  buffer_size: 25%    
+  touchscreens:
+    - my_touch
+  style_definitions:
+    - id: header_footer
+      bg_color: 0x2F8CD8
+      bg_grad_color: 0x005782
+      bg_grad_dir: VER
+      bg_opa: COVER
+      border_opa: TRANSP
+      radius: 0
+      pad_all: 0
+      pad_row: 0
+      pad_column: 0
+      border_color: 0x0077b3
+      text_color: 0xFFFFFF
+      width: 100%
+      height: 30
+    
+    - id: slider_style_main
+      bg_color: 0xDDDDDD
+      radius: 10
+      border_width: 0
+    - id: slider_style_indicator
+      bg_color: 0x2F8CD8
+      radius: 10
+    - id: slider_style_knob
+      bg_color: 0xFFFFFF
+      border_width: 2
+      border_color: 0x2F8CD8
+      radius: 20
+      pad_all: 5 # Macht den Knopf größer für Touch   
+  pages:
+    - id: main_page
+      widgets:
+        - obj:
+            align: TOP_MID
+            styles: header_footer
+            widgets:
+              - label:
+                  text: "Home Assistant"
+                  align: CENTER
+                  text_align: CENTER
+                  text_color: 0xFFFFFF
+        - obj:
+            align: bottom_mid
+            styles: header_footer
+            widgets:
+              - label:
+                  text: "Julian Patri 3AHIT"
+                  align: CENTER
+                  text_align: CENTER
+                  text_color: 0xFFFFFF  
+        - switch:
+            id: light_switch
+            align: CENTER
+            y: -40
+            on_click:
+              light.toggle: local_gpio3
+
+        - label:
+            id: brightness_label
+            text: "0 %"
+            align: CENTER
+            y: 0 # Genau in der Mitte zwischen Switch und Slider
+            text_color: 0x000000 # Schwarz für bessere Lesbarkeit
+
+        - slider:
+            id: brightness_slider
+            align: CENTER
+            y: 40   # Nach unten verschoben
+            width: 200
+            height: 20
+            min_value: 0
+            max_value: 100
+            value: 75
+            
+            animated: true
+            anim_time: 1000ms
+            #indicator: percentage
+            on_value:
+              then:
+                - lvgl.label.update:
+                    id: brightness_label
+                    # String zusammenbauen und am Ende in C-String umwandeln
+                    text: !lambda 'return ("Helligkeitswert: " + std::to_string((int)x) + " %").c_str();'
+                - if:
+                    condition:
+                      # Wenn Wert 0 ist -> Ausschalten
+                      lambda: 'return x == 0;'
+                    then:
+                      - light.turn_off: local_gpio1
+                    else:
+                      # Sonst -> Einschalten mit Helligkeit
+                      - light.turn_on:
+                          id: local_gpio1
+                          # 'x' ist 0-100, brightness erwartet 0.0 bis 1.0 (float)
+                          brightness: !lambda "return x / 100.0;"
+            
+touchscreen:
+  platform: xpt2046
+  id: my_touch
+  spi_id: touch
+  cs_pin: GPIO33  
+  interrupt_pin: GPIO36
+  update_interval: 50ms
+  threshold: 400
+  transform:
+    swap_xy: true
+    mirror_x: false
+    mirror_y: false
+  calibration:
+    x_min: 280
+    x_max: 3860
+    y_min: 340
+    y_max: 3860
+
+display:
+  - platform: ili9xxx
+    spi_id: tft
+    model: ILI9341
+    dc_pin: GPIO2
+    cs_pin: GPIO15
+    rotation: 90
+    invert_colors: False
+
+
+```
+
 # Anforderungen
   
 ### Funktionale Anforderungen
