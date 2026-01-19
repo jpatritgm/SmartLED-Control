@@ -179,7 +179,7 @@ services:
 <img width="945" height="721" alt="image" src="https://github.com/user-attachments/assets/b5df5ea1-4ae4-4ccf-92c9-77bf5cb1e227" />
 <br><br>
 
-***Automationen***
+### Automationen
 
 **Sonnenaufgang**
 > Diese Automation steuert, dass 20 Minuten nachdem die Sonne am Horizont aufgeht, der LED-Streifen in Schritten von 5 Minuten/300 Sekunden dunkler wird, bis er schließlich komplett ausgeschalten ist. Diese Automation ist um 20 Minuten versetzt, da es oft noch nicht hell ist, auch wenn die Sonne schon am Horizont aufgegangen ist und es etwas Zeit braucht, bis das Licht uns erreicht.
@@ -194,6 +194,12 @@ services:
 
 
 ### ESPHome
+ESPHome ist eine Firmware, welche ich ebenfalls als Container eingebaut habe (mehr siehe [ESPHome](https://esphome.io)).<br>
+
+> ESPHome Page mit bereits hinzugefügten Geräten
+
+<img width="945" height="277" alt="image" src="https://github.com/user-attachments/assets/98894389-c925-4f96-8ee1-9f12f6400635" />
+
 
 > Konfigurationsdatei für LCD-Display
 
@@ -460,8 +466,11 @@ display:
 *In Woche 20 wird das Projekt präsentiert.*
 
 # Probleme und Lösungen
+### *Problem #1* - Das Display
+Das mit Abstand größte Problem stellte das Display, welches ich erstmals für das Projekt verwenden wollte, dar ([ESP32-8048s070c](https://www.tinytronics.nl/en/development-boards/microcontroller-boards/with-wi-fi/jingcai-esp32-8048s070c-7-inch-tft-lcd-display-800*480-pixels-with-touchscreen-esp32-s3)). Es gab kaum Dokumentation oder Konfigurations-Informationen online zu finden, außerdem war keine Beschreibung oder Information zu Treibern vom Hersteller beigegeben. Stundenlanges Ausprobieren verschiedenster Treiber für den Touchscreen hat mich auch nicht viel weiter gebracht, also habe ich mich nach einigen Tagen dazu entschieden, auf ein anderes, bekannteres Display mit mehr Informationen zu der Konfiguration umzusteigen - das [ESP32-32e LCD-Display](https://www.lcdwiki.com/2.8inch_ESP32-32E_Display).
 
-
+### WLAN-Probleme
+Weiters hatte ich manchmal das Problem, das der ESP32 von dem Display und mein anderer ESP32C3 nicht in dem WLAN Netzwerk gefunden wurden und ich somit nicht ihre IP-Adresse herausfinden und sie direkt ansprechen konnte. Jedoch konnte ich dieses Problem relativ leicht lösen, indem ich ihnen direkt eine IP-Adresse mit der Code-Zeile ``use_adress: XXX.XXX.XXX.XXX`` zuwies.
 # Ressourcen
 ### Hardware
 - Touch-Display (mit eingebautem ESP32S3)
