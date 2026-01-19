@@ -170,7 +170,8 @@ services:
 
 <img width="945" height="388" alt="image" src="https://github.com/user-attachments/assets/1f28b026-25b4-4c07-b7a7-c70b70bbc265" />
 
-[INSERT VIDEO]
+
+[INSERT VIDEO]  
 
 ***LED-Streifen Entität***
 
