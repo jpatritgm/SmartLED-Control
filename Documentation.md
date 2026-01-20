@@ -1,4 +1,4 @@
-# Smart LED-Control Dokumentation
+# Dokumentation - SLC (Smart LED-Control) System
 
 Inhalt dieser Dokumentation:
 1. [Idee und Projektstart](#idee-und-projektstart)
