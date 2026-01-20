@@ -18,12 +18,13 @@ Inhalt dieser Dokumentation:
 - Display mit Informationen, wie Temperatur/Wetter -> touch Funktion
 - +Licht steuern über Display (RGB?)
 ### Zusammenfasssung des Projekts
-***Ziel dieses Projekts ist es, einen LED-Streifen mit einem Touch-Display zu steuern. Zusätzlich soll die Funktion implementiert werden, dass die Helligkeit des Lichts je nach derzeitiger Tageszeit(/Helligkeit) sich verändert - wenn es helllichter Tag ist, ist das Licht komplett aus, wenn es dunkler/später wird, so wird das Licht heller. Diese Funktion soll von Benutzer aktiviert/deaktiviert können werden. Damit das Display rund um die Uhr derzeitige Informationen liefern kann, wird Home Assistant über einen alten Laptop benutz. Als EK könnte man noch weitere Funktionen implementieren, wie z.B. auch andere Informationen, wie Wetter oder Temperatur am Display anzuzeigen.***
+***Ziel dieses Projekts ist es, einen LED-Streifen mit einem Touch-Display zu steuern. Zusätzlich soll die Funktion implementiert werden, dass die Helligkeit des Lichts je nach derzeitiger Tageszeit(/Helligkeit) sich verändert - wenn es helllichter Tag ist, ist das Licht komplett aus, wenn es dunkler/später wird, so wird das Licht heller. Diese Funktion wird mithilfe von Sonnenuntergangs bzw. -aufgangs Automationen in Home Assistant realisiert. Damit das Display rund um die Uhr derzeitige Informationen liefern kann, wird Home Assistant über einen alten Laptop als Container eingebunden. Als EK könnte man noch weitere Funktionen implementieren, wie z.B. auch andere Informationen, wie Wetter oder Temperatur am Display anzuzeigen.***
 ### Abzudeckende Kriterien
 - Kommandozeile, (Linux,) Powershell, bash/sh
 - Virtualisierung, Container
 - Networking, Cloud
-- Microcontroller, Datenerfassung, Session, Aktoren(?)
+- Microcontroller, Datenerfassung, Session, Aktoren <br>
+-> [Habe ich alles abgedeckt?](#abgedeckte-kriterien)
 ### Bewertungskriterien
 **GKü** - *Die LED kann über das Display gesteuert werden (Helligkeit, An/Aus)*
 
@@ -34,10 +35,10 @@ Inhalt dieser Dokumentation:
 **EKv** - *Eine weitere nützliche Funktion wurde eingebaut (z.B. andere Sensoren, Funktionen)*
 
 # Planung und Recherche
-> Vor dem Arbeitsstart habe ich mir angeschaut, welche Komponenten ich für die Umsetzung brauche und welche Technologien am besten geeignet sind.
-Ich habe mich entschieden, einen ESP32 oder Raspberry Pi zu verwenden, weil diese Geräte WLAN unterstützen und genug Leistung für die Displaysteuerung haben.  
+***Vor dem Arbeitsstart habe ich mir angeschaut, welche Komponenten ich für die Umsetzung brauche und welche Technologien am besten geeignet sind.
+Ich habe mich entschieden, einen ESP32 oder Raspberry Pi zu verwenden, weil diese Geräte WLAN unterstützen und genug Leistung für die Displaysteuerung haben. -> Das war noch bevor ich herausgefunden habe, dass das LCD-Display einen ESP32 selbst integriert hat und ich diesen gleich programmieren könnte. <br>
 Für die Daten (z. B. Wetter, Uhrzeit, Temperatur) möchte ich Home Assistant auf einem virtuellen Computer mit einem Linux Betriebssystem verwenden, um damit auch gleich den Bereich Kommandozeile abzudecken.  
-Ich habe recherchiert, wie man Home Assistant installieren kann, und herausgefunden, dass man es gut in einem Docker-Container laufen lassen kann. Also habe ich mich entschieden, Home Assistant in Linux mit der Kommandozeile in einem Container zu installieren. Damit decke ich auch gleich das Thema Virtualisierung ab.
+Ich habe recherchiert, wie man Home Assistant installieren kann, und herausgefunden, dass man es gut in einem Docker-Container laufen lassen kann. Also habe ich mich entschieden, Home Assistant in Linux mit der Kommandozeile in einem Container zu installieren. Damit decke ich auch gleich das Thema Virtualisierung ab.***
 ### Für den Hardware-Teil werden die folgenden Komponenten gebraucht
 - Mikrocontroller (WLAN kompatibel)
 - LED-Strip: 12 V, 30–60 LEDs pro Meter
@@ -101,7 +102,7 @@ Zuerst habe ich einen Boot-Stick mit dem Ubuntu 24.04.3 Iso-Image erstellt. Dazu
 **Ubuntu Image:** https://ubuntu.com/download/desktop
 <br>**Rufus:** https://rufus.ie/de/
 ### Tailscale
-Danach habe ich auf diesem und meinem Schullaptop Tailscale installiert und getestet, ob eine stabile Verbindung möglich war.<br>
+Danach habe ich auf diesem und meinem Schullaptop [Tailscale](https://tailscale.com) installiert und getestet, ob eine stabile Verbindung möglich war.<br>
 In Linux habe ich für die Installation von Tailscale den Befehl ``curl -fsSL https://tailscale.com/install.sh | sh`` verwendet. Um die Funktionalität davon zu prüfen, habe ich mit dem Befehl ``sudo tailscale up`` Tailscale in Ubuntu gestartet.<br>
 Dann habe ich Tailscale übers Web auf dem anderen Arbeitslaptop (Windows) installiert und mich mit demselben Konto angemeldet, wie auch in Ubuntu. Dies war erfolgreich, das konnte man daran erkennen, dass die beiden Geräte auf der Website im selben Netzwerk erkennbar waren 
 (-> heißt <ins>Tailnet</ins>).<br>
@@ -170,9 +171,6 @@ services:
 
 <img width="945" height="388" alt="image" src="https://github.com/user-attachments/assets/1f28b026-25b4-4c07-b7a7-c70b70bbc265" />
 
-<video src="assets/LEDControl (1).mp4" controls="controls" style="max-width: 100%;">
-</video>
-[INSERT VIDEO]  
 
 ***LED-Streifen Entität***
 
