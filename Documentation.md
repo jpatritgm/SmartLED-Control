@@ -18,7 +18,7 @@ Inhalt dieser Dokumentation:
 - Display mit Informationen, wie Temperatur/Wetter -> touch Funktion
 - +Licht steuern über Display (RGB?)
 ### Zusammenfasssung des Projekts
-***Ziel dieses Projekts ist es, einen LED-Streifen mit einem Touch-Display zu steuern. Zusätzlich soll die Funktion implementiert werden, dass die Helligkeit des Lichts je nach derzeitiger Tageszeit(/Helligkeit) sich verändert - wenn es helllichter Tag ist, ist das Licht komplett aus, wenn es dunkler/später wird, so wird das Licht heller. Diese Funktion wird mithilfe von Sonnenuntergangs bzw. -aufgangs Automationen in Home Assistant realisiert. Damit das Display rund um die Uhr derzeitige Informationen liefern kann, wird Home Assistant über einen alten Laptop als Container eingebunden. Als EK könnte man noch weitere Funktionen implementieren, wie z.B. auch andere Informationen, wie Wetter oder Temperatur am Display anzuzeigen.***
+***Ziel dieses Projekts ist es, einen LED-Streifen mit einem Touch-Display zu steuern. Zusätzlich soll die Funktion implementiert werden, dass die Helligkeit des Lichts je nach derzeitiger Tageszeit(/Helligkeit) sich verändert - wenn es helllichter Tag ist, ist das Licht komplett aus, wenn es dunkler/später wird, so wird das Licht heller. Diese Funktion wird mithilfe von Sonnenuntergangs bzw. -aufgangs [Automationen](#automationen) in Home Assistant realisiert. Damit das Display rund um die Uhr derzeitige Informationen liefern kann, wird Home Assistant über einen alten Laptop als Container eingebunden. Als EK könnte man noch weitere Funktionen implementieren, wie z.B. auch andere Informationen, wie Wetter oder Temperatur am Display anzuzeigen.***
 ### Abzudeckende Kriterien
 - Kommandozeile, (Linux,) Powershell, bash/sh
 - Virtualisierung, Container
@@ -40,7 +40,7 @@ Ich habe mich entschieden, einen ESP32 oder Raspberry Pi zu verwenden, weil dies
 Für die Daten (z. B. Wetter, Uhrzeit, Temperatur) möchte ich Home Assistant auf einem virtuellen Computer mit einem Linux Betriebssystem verwenden, um damit auch gleich den Bereich Kommandozeile abzudecken.  
 Ich habe recherchiert, wie man Home Assistant installieren kann, und herausgefunden, dass man es gut in einem Docker-Container laufen lassen kann. Also habe ich mich entschieden, Home Assistant in Linux mit der Kommandozeile in einem Container zu installieren. Damit decke ich auch gleich das Thema Virtualisierung ab.***
 ### Für den Hardware-Teil werden die folgenden Komponenten gebraucht
-- Mikrocontroller (WLAN kompatibel)
+- Mikrocontroller (WLAN kompatibel) (-> in Display integriert)
 - LED-Strip: 12 V, 30–60 LEDs pro Meter
 - MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistor)
 - Touch-Display
@@ -51,7 +51,7 @@ Ich habe recherchiert, wie man Home Assistant installieren kann, und herausgefun
 
 # Erste Tests der HW
 Als nächsten Schritt habe ich erste Tests mit meinen <ins>HW-Komponenten</ins> gemacht.
-Ich habe ein kleines Testprogramm geschrieben, um die Funktionalität des Fotowiderstands und die Grundlegende Logik seiner Aufgabe zu testen.
+Ich habe ein kleines Testprogramm geschrieben, um die Funktionalität des Fotowiderstands und die Grundlegende Logik dieses Projektes zu testen.
 
 -> Umso weniger Licht er bekommt, desto heller leuchtet die LED
 
