@@ -405,6 +405,8 @@ display:
 
 
 ```
+> [!IMPORTANT]
+> Der oben stehende Code wurde teilweise KI-generiert mithilfe von [Gemini](gemini.google.com).
 
 # Anforderungen
   
