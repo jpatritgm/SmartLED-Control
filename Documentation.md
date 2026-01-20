@@ -473,9 +473,201 @@ Das mit Abstand größte Problem stellte das 7" Display, welches ich erstmals f�
 
 > Jedoch habe ich eine einfache GUI auf dem großen 7" Display hinbekommen, welche aber nicht touch-Funktionen realisieren konnte
 
-![display7](https://github.com/user-attachments/assets/e7f1a90e-5d66-4348-ad3b-a3f03a99b033)
+![display7](https://github.com/user-attachments/assets/e7f1a90e-5d66-4348-ad3b-a3f03a99b033) <br><br>
+
+Später nach einigen Tagen habe ich auch den richtigen Treiber für den Touchscreen gefunden und einfache FUnktionen mit Touch realisieren können. Ein Code-Beispiel hier: <br>
+
+```
+esphome:
+  name: esp32s3
+  friendly_name: ESP32S3
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: ESP32S3
+  framework:
+    type: esp-idf
+  # Required to achieve sufficient PSRAM bandwidth
+    sdkconfig_options:
+      CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: y
+      CONFIG_ESP32S3_DATA_CACHE_64KB: y
+      CONFIG_SPIRAM_FETCH_INSTRUCTIONS: y
+      CONFIG_SPIRAM_RODATA: y
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "v8GGRTsSnQ0Af2LT+TNEm/wP7c8DHTohv15KSqbCOeo="
+
+ota:
+  - platform: esphome
+    password: "3c55c2e6a8618cdd90c2ebf8d6b2294c"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32S3 Fallback Hotspot"
+    password: "QocBSfHASgb1"
+
+# Konfiguration des PSRAM (Oktal-Modus für S3-N16R8 Boards)
+psram:
+  mode: octal
+  speed: 80MHz
+
+# I2C für den GT911 Touch-Controller
+i2c:
+  sda: 19
+  scl: 20
+  scan: true
+
+ch422g:
+  - id: ch422g_hub
+
+captive_portal:
+
+output:
+  - platform: ledc
+    pin: GPIO2
+    id: backlight_pwm
+  - platform: ledc    
+    pin: GPIO17
+    id: gpio_out
+    #inverted: False
+  - platform: ledc   
+    pin: GPIO18
+    id: gpio_out_pmw
+    #inverted: False
+
+light:
+  - platform: monochromatic
+    output: backlight_pwm
+    name: Display Backlight
+    id: backlight
+    restore_mode: ALWAYS_ON
+  - platform: monochromatic    
+    output: gpio_out
+    id: local_gpio
+    name: "GPIO 17 Out"
+  - platform: monochromatic    
+    output: gpio_out_pmw
+    id: local_gpio_pmw
+    name: "GPIO 18 Out"
+
+lvgl:
+  buffer_size: 50%
+  color_depth: 16
+  touchscreens:
+    - my_touch  
+  style_definitions:
+    - id: header_footer
+      bg_color: 0x2F8CD8
+      bg_grad_color: 0x005782
+      bg_grad_dir: VER
+      bg_opa: COVER
+      border_opa: TRANSP
+      radius: 0
+      pad_all: 0
+      pad_row: 0
+      pad_column: 0
+      border_color: 0x0077b3
+      text_color: 0xFFFFFF
+      width: 100%
+      height: 30
+  pages:
+    - id: main_page
+      widgets:
+        - obj:
+            align: TOP_MID
+            styles: header_footer
+            widgets:
+              - label:
+                  text: "Home Assistant"
+                  align: CENTER
+                  text_align: CENTER
+                  text_color: 0xFFFFFF
+        - obj:
+            align: BOTTOM_MID
+            styles: header_footer
+            widgets:
+              - label:
+                  text: "Julian Patri 3AHIT"
+                  align: CENTER
+                  text_align: CENTER
+                  text_color: 0xFFFFFF  
+        - switch:
+            id: light_switch
+            align: CENTER
+            on_click:
+              light.toggle: local_gpio
+        - slider:
+            x: 10
+            y: 10
+            width: 220
+            id: slider_id
+            value: 75
+            min_value: 0
+            max_value: 100
+            align: RIGHT_MID
+            on_click:
+              light.toggle: local_gpio_pmw
+        - checkbox:
+            x: 10
+            y: 10
+            align: LEFT_MID
+            id: checkbox_id
+            text: Checkbox            
+
+touchscreen:
+  - platform: gt911
+    id: my_touch
+    address: 0x5D # Standard für GT911
+
+display:
+  - platform: rpi_dpi_rgb    
+    id: my_display
+    dimensions:
+      width: 800
+      height: 480
+    color_order: RGB
+    invert_colors: True
+    update_interval: never
+    auto_clear_enabled: False
+    # 16-Bit Datenbus (5x Rot, 6x Grün, 5x Blau = 65k Farben)
+    data_pins:
+      red:
+        - 14 # R0 (LSB)
+        - 21 # R1
+        - 47 # R2
+        - 48 # R3
+        - 45 # R4 (MSB)
+      green:
+        - 9  # G0 (LSB)
+        - 46  # G1
+        - 3  # G2
+        - 8 # G3
+        - 16 # G4
+        - 1  # G5 (MSB)
+      blue:
+        - 15  # B0 (LSB)
+        - 7  # B1
+        - 6 # B2
+        - 5  # B3
+        - 4  # B4 (MSB)
+    # Steuersignale (Timings) für das Sunton 7" Panel
+    de_pin: 41
+    pclk_pin: 42
+    hsync_pin: 39
+    vsync_pin: 40
+    pclk_frequency: 16MHz
 
 
+```
 
 ### WLAN-Probleme
 Weiters hatte ich manchmal das Problem, das der ESP32 von dem Display und mein anderer ESP32C3 nicht in dem WLAN Netzwerk gefunden wurden und ich somit nicht ihre IP-Adresse herausfinden und sie direkt ansprechen konnte. Jedoch konnte ich dieses Problem relativ leicht lösen, indem ich ihnen direkt eine IP-Adresse mit der Code-Zeile ``use_adress: XXX.XXX.XXX.XXX`` zuwies.
