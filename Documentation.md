@@ -181,14 +181,14 @@ services:
 
 ### Automationen
 
-**Sonnenaufgang**
-> Diese Automation steuert, dass 20 Minuten nachdem die Sonne am Horizont aufgeht, der LED-Streifen in Schritten von 5 Minuten/300 Sekunden dunkler wird, bis er schließlich komplett ausgeschalten ist. Diese Automation ist um 20 Minuten versetzt, da es oft noch nicht hell ist, auch wenn die Sonne schon am Horizont aufgegangen ist und es etwas Zeit braucht, bis das Licht uns erreicht.
+**Sonnenaufgang** <br>
+*Diese Automation steuert, dass 20 Minuten nachdem die Sonne am Horizont aufgeht, der LED-Streifen in Schritten von 5 Minuten/300 Sekunden dunkler wird, bis er schließlich komplett ausgeschalten ist. Diese Automation ist um 20 Minuten versetzt, da es oft noch nicht hell ist, auch wenn die Sonne schon am Horizont aufgegangen ist und es etwas Zeit braucht, bis das Licht uns erreicht.*
 
 <img width="945" height="500" alt="image" src="https://github.com/user-attachments/assets/87e619f4-30d9-49f3-8cfb-2968cd5f87ec" />
 <br><br>
 
-**Sonnenuntergang**
-> Die 2. Automation bewirkt genau das Gegenteil der ersten. Sie automatisiert, dass der LED-Streifen ab 10 Minuten nach Untergang am Horizont heller wird. Dies erfolgt in Schritten von 10% alle 10 Minuten/600 Sekunden. Auch hier ist der Start der Automation um 10 Minuten versetzt, da es oft erst dunkel wird, schon nachdem die Sonne tatsächlich untergegangen ist.
+**Sonnenuntergang** <br>
+*Die 2. Automation bewirkt genau das Gegenteil der ersten. Sie automatisiert, dass der LED-Streifen ab 10 Minuten nach Untergang am Horizont heller wird. Dies erfolgt in Schritten von 10% alle 10 Minuten/600 Sekunden. Auch hier ist der Start der Automation um 10 Minuten versetzt, da es oft erst dunkel wird, schon nachdem die Sonne tatsächlich untergegangen ist.*
 
 <img width="945" height="500" alt="image" src="https://github.com/user-attachments/assets/b66ea38c-6207-4e76-9728-51ba23b14ecc" />
 
